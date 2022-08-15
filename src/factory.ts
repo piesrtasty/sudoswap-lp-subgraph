@@ -25,6 +25,11 @@ export function handleNewPair(event: NewPair): void {
   pair.owner = pairOwner.id
   pair.collection = collection.id
   pair.type = BigInt.fromI32(pairContract.poolType())
+  pair.assetRecipient = pairContract.assetRecipient().toHex()
+  pair.bondingCurve = pairContract.bondingCurve().toHex()
+  pair.delta = pairContract.delta()
+  pair.fee = pairContract.fee()
+  pair.spotPrice = pairContract.spotPrice()
 
   pair.save()
   pairOwner.save()

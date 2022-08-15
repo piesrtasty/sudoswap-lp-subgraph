@@ -3,6 +3,11 @@ type Pair @entity {
   owner: PairOwner!
   collection: Collection!
   type: BigInt!
+  assetRecipient: String!
+  bondingCurve: String!
+  delta: BigInt!
+  fee: BigInt!
+  spotPrice: BigInt!
 }
 
 type PairOwner @entity {

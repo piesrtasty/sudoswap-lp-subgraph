@@ -1,45 +1,53 @@
 specVersion: 0.0.4
 schema:
-  file: ./schema.graphql
+    file: ./schema.graphql
 dataSources:
-  - kind: ethereum
-    name: LSSVMFactory
-    network: mainnet
-    source:
-      address: "0xb16c1342E617A5B6E4b631EB114483FDB289c0A4"
-      abi: LSSVMFactory
-      startBlock: 14645816
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - NewPair
-      abis:
-        - name: LSSVMFactory
-          file: ./abis/LSSVMFactory.json
-        - name: LSSVMPair
-          file: ./abis/LSSVMPair.json
-      eventHandlers:
-        - event: NewPair(address)
-          handler: handleNewPair
-      file: ./src/factory.ts
+    - kind: ethereum
+      name: LSSVMFactory
+      network: mainnet
+      source:
+          address: "0xb16c1342E617A5B6E4b631EB114483FDB289c0A4"
+          abi: LSSVMFactory
+          startBlock: 14645816
+      mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.6
+          language: wasm/assemblyscript
+          entities:
+              - NewPair
+          abis:
+              - name: LSSVMFactory
+                file: ./abis/LSSVMFactory.json
+              - name: LSSVMPair
+                file: ./abis/LSSVMPair.json
+          eventHandlers:
+              - event: NewPair(address)
+                handler: handleNewPair
+          file: ./src/factory.ts
 templates:
-  - kind: ethereum
-    name: LSSVMPair
-    network: mainnet
-    source:
-      abi: LSSVMPair
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - OwnershipTransferred
-      abis:
-        - name: LSSVMPair
-          file: ./abis/LSSVMPair.json
-      eventHandlers:
-        - event: OwnershipTransferred(indexed address)
-          handler: handleOwnershipTransferred
-      file: ./src/pair.ts
+    - kind: ethereum
+      name: LSSVMPair
+      network: mainnet
+      source:
+          abi: LSSVMPair
+      mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.6
+          language: wasm/assemblyscript
+          entities:
+              - OwnershipTransferred
+          abis:
+              - name: LSSVMPair
+                file: ./abis/LSSVMPair.json
+          eventHandlers:
+              - event: OwnershipTransferred(indexed address)
+                handler: handleOwnershipTransferred
+              - event: AssetRecipientChange(address)
+                handler: handleAssetRecipientChange
+              - event: DeltaUpdate(uint128)
+                handler: handleDeltaUpdate
+              - event: FeeUpdate(uint96)
+                handler: handleFeeUpdate
+              - event: SpotPriceUpdate(uint128)
+                handler: handleSpotPriceUpdate
+          file: ./src/pair.ts
