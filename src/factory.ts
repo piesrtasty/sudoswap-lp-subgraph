@@ -3,6 +3,7 @@ import {
 } from "../generated/LSSVMFactory/LSSVMFactory"
 import { LSSVMPair } from "../generated/templates/LSSVMPair/LSSVMPair";
 import { Pair, Collection, PairOwner } from "../generated/schema"
+import { BigInt } from "@graphprotocol/graph-ts";
 
 
 export function handleNewPair(event: NewPair): void {
@@ -23,6 +24,7 @@ export function handleNewPair(event: NewPair): void {
 
   pair.owner = pairOwner.id
   pair.collection = collection.id
+  pair.type = BigInt.fromI32(pairContract.poolType())
 
   pair.save()
   pairOwner.save()

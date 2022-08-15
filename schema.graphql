@@ -2,6 +2,7 @@ type Pair @entity {
   id: ID!
   owner: PairOwner!
   collection: Collection!
+  type: BigInt!
 }
 
 type PairOwner @entity {
