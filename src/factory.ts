@@ -5,7 +5,6 @@ import { LSSVMPair } from "../generated/templates/LSSVMPair/LSSVMPair";
 import { Pair, Collection, PairOwner } from "../generated/schema"
 import { BigInt } from "@graphprotocol/graph-ts";
 
-
 export function handleNewPair(event: NewPair): void {
   let pair = new Pair(event.params.poolAddress.toHex())
   let pairContract = LSSVMPair.bind(event.params.poolAddress)
@@ -30,6 +29,7 @@ export function handleNewPair(event: NewPair): void {
   pair.delta = pairContract.delta()
   pair.fee = pairContract.fee()
   pair.spotPrice = pairContract.spotPrice()
+  pair.ethBalance = event.transaction.value
 
   pair.save()
   pairOwner.save()

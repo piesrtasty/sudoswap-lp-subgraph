@@ -1,4 +1,4 @@
-import { AssetRecipientChange, DeltaUpdate, FeeUpdate, OwnershipTransferred, SpotPriceUpdate } from "../generated/templates/LSSVMPair/LSSVMPair";
+import { AssetRecipientChange, DeltaUpdate, FeeUpdate, OwnershipTransferred, SpotPriceUpdate, TokenDeposit } from "../generated/templates/LSSVMPair/LSSVMPair";
 import { Pair, PairOwner } from "../generated/schema"
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
@@ -36,5 +36,11 @@ export function handleFeeUpdate(event: FeeUpdate): void {
 export function handleSpotPriceUpdate(event: SpotPriceUpdate): void {
     let pair = Pair.load(event.transaction.from.toHex())
     pair!.spotPrice = event.params.newSpotPrice
+    pair!.save()
+}
+
+export function handleTokenDeposit(event: TokenDeposit): void {
+    let pair = Pair.load(event.transaction.from.toHex())
+    pair!.ethBalance = pair!.ethBalance.plus(event.params.amount)
     pair!.save()
 }
