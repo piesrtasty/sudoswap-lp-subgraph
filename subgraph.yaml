@@ -1,0 +1,47 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: LSSVMFactory
+    network: mainnet
+    source:
+      address: "0xb16c1342E617A5B6E4b631EB114483FDB289c0A4"
+      abi: LSSVMFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - BondingCurveStatusUpdate
+        - CallTargetStatusUpdate
+        - NFTDeposit
+        - NewPair
+        - OwnershipTransferred
+        - ProtocolFeeMultiplierUpdate
+        - ProtocolFeeRecipientUpdate
+        - RouterStatusUpdate
+        - TokenDeposit
+      abis:
+        - name: LSSVMFactory
+          file: ./abis/LSSVMFactory.json
+      eventHandlers:
+        - event: BondingCurveStatusUpdate(address,bool)
+          handler: handleBondingCurveStatusUpdate
+        - event: CallTargetStatusUpdate(address,bool)
+          handler: handleCallTargetStatusUpdate
+        - event: NFTDeposit(address)
+          handler: handleNFTDeposit
+        - event: NewPair(address)
+          handler: handleNewPair
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: ProtocolFeeMultiplierUpdate(uint256)
+          handler: handleProtocolFeeMultiplierUpdate
+        - event: ProtocolFeeRecipientUpdate(address)
+          handler: handleProtocolFeeRecipientUpdate
+        - event: RouterStatusUpdate(address,bool)
+          handler: handleRouterStatusUpdate
+        - event: TokenDeposit(address)
+          handler: handleTokenDeposit
+      file: ./src/lssvm-factory.ts
