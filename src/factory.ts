@@ -4,6 +4,7 @@ import {
 import { LSSVMPair } from "../generated/templates/LSSVMPair/LSSVMPair";
 import { Pair, Collection, PairOwner } from "../generated/schema"
 import { BigInt } from "@graphprotocol/graph-ts";
+import { LSSVMPair as PairTemplate } from '../generated/templates'
 
 export function handleNewPair(event: NewPair): void {
   let pair = new Pair(event.params.poolAddress.toHex())
@@ -33,4 +34,6 @@ export function handleNewPair(event: NewPair): void {
   pair.save()
   pairOwner.save()
   collection.save()
+
+  PairTemplate.create(event.params.poolAddress)
 }
