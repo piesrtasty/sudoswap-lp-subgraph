@@ -1,5 +1,6 @@
 import { AssetRecipientChange, DeltaUpdate, FeeUpdate, OwnershipTransferred, SpotPriceUpdate, TokenDeposit } from "../generated/templates/LSSVMPair/LSSVMPair";
 import { Pair, PairOwner } from "../generated/schema"
+import { LSSVMPair } from "../generated/templates/LSSVMPair/LSSVMPair";
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
     let pair = Pair.load(event.transaction.from.toHex())
@@ -17,30 +18,28 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {
 
 export function handleAssetRecipientChange(event: AssetRecipientChange): void {
     let pair = Pair.load(event.transaction.from.toHex())
-    pair!.assetRecipient = event.params.a.toHex()
+    let pairContract = LSSVMPair.bind(event.transaction.from)
+    pair!.assetRecipient = pairContract.assetRecipient().toHex()
     pair!.save()
 }
 
 export function handleDeltaUpdate(event: DeltaUpdate): void {
     let pair = Pair.load(event.transaction.from.toHex())
-    pair!.delta = event.params.newDelta
+    let pairContract = LSSVMPair.bind(event.transaction.from)
+    pair!.delta = pairContract.delta()
     pair!.save()
 }
 
 export function handleFeeUpdate(event: FeeUpdate): void {
     let pair = Pair.load(event.transaction.from.toHex())
-    pair!.fee = event.params.newFee
+    let pairContract = LSSVMPair.bind(event.transaction.from)
+    pair!.fee = pairContract.fee()
     pair!.save()
 }
 
 export function handleSpotPriceUpdate(event: SpotPriceUpdate): void {
     let pair = Pair.load(event.transaction.from.toHex())
-    pair!.spotPrice = event.params.newSpotPrice
-    pair!.save()
-}
-
-export function handleTokenDeposit(event: TokenDeposit): void {
-    let pair = Pair.load(event.transaction.from.toHex())
-    pair!.ethBalance = pair!.ethBalance.plus(event.params.amount)
+    let pairContract = LSSVMPair.bind(event.transaction.from)
+    pair!.spotPrice = pairContract.spotPrice()
     pair!.save()
 }

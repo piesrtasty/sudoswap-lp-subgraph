@@ -8,7 +8,6 @@ type Pair @entity {
   delta: BigInt!
   fee: BigInt!
   spotPrice: BigInt!
-  ethBalance: BigInt!
 }
 
 type PairOwner @entity {

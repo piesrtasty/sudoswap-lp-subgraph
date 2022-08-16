@@ -29,7 +29,6 @@ export function handleNewPair(event: NewPair): void {
   pair.delta = pairContract.delta()
   pair.fee = pairContract.fee()
   pair.spotPrice = pairContract.spotPrice()
-  pair.ethBalance = event.transaction.value
 
   pair.save()
   pairOwner.save()

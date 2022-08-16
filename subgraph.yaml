@@ -50,6 +50,4 @@ templates:
           handler: handleFeeUpdate
         - event: SpotPriceUpdate(uint128)
           handler: handleSpotPriceUpdate
-        - event: TokenDeposit(uint256)
-          handler: handleTokenDeposit
       file: ./src/pair.ts
