@@ -8,6 +8,9 @@ type Pair @entity {
   delta: BigInt!
   fee: BigInt!
   spotPrice: BigInt!
+  "nftIds is sorted in ascending order with unique elements (unless the NFT is malformed)"
+  nftIds: [BigInt!]!
+  numNfts: BigInt!
 }
 
 type PairOwner @entity {

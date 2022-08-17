@@ -14,7 +14,9 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - NewPair
+        - Pair
+        - PairOwner
+        - Collection
       abis:
         - name: LSSVMFactory
           file: ./abis/LSSVMFactory.json
@@ -35,7 +37,7 @@ templates:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - OwnershipTransferred
+        - Pair
       abis:
         - name: LSSVMPair
           file: ./abis/LSSVMPair.json
@@ -51,3 +53,23 @@ templates:
         - event: SpotPriceUpdate(uint128)
           handler: handleSpotPriceUpdate
       file: ./src/pair.ts
+  - kind: ethereum
+    name: ERC721
+    network: mainnet
+    source:
+      abi: ERC721
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Pair
+      abis:
+        - name: ERC721
+          file: ./abis/ERC721.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: ConsecutiveTransfer(indexed uint256,uint256,indexed address,indexed address)
+          handler: handleConsecutiveTransfer
+      file: ./src/erc721.ts

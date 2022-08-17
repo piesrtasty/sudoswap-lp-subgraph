@@ -5,7 +5,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {
     let pair = Pair.load(event.address.toHex())
 
     let pairOwner = PairOwner.load(event.params.newOwner.toHex())
-    if (pairOwner == null) {
+    if (pairOwner === null) {
         pairOwner = new PairOwner(event.params.newOwner.toHex())
     }
 
