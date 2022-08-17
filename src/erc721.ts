@@ -45,20 +45,23 @@ export function handleTransfer(event: Transfer): void {
         // < tokenId
         let idx = binarySearchGreatestLessThan(tokenId, nftIds)
 
-        // insert
-        if (idx.equals(NEG_ONE_INT)) {
-            // tokenId <= all existing elements in nftIds
-            nftIds = [tokenId].concat(nftIds)
-        } else if (idx.equals(BigInt.fromI32(nftIds.length - 1))) {
-            // tokenId > all existing elements in nftIds
-            nftIds.push(tokenId)
-        } else {
-            nftIds = nftIds.slice(0, idx.plus(ONE_INT).toI32()).concat([tokenId]).concat(nftIds.slice(idx.plus(ONE_INT).toI32()))
-        }
+        // ensure no duplicates
+        if (idx.equals(BigInt.fromI32(nftIds.length - 1)) || nftIds[idx.plus(ONE_INT).toI32()].notEqual(tokenId)) {
+            // insert
+            if (idx.equals(NEG_ONE_INT)) {
+                // tokenId <= all existing elements in nftIds
+                nftIds = [tokenId].concat(nftIds)
+            } else if (idx.equals(BigInt.fromI32(nftIds.length - 1))) {
+                // tokenId > all existing elements in nftIds
+                nftIds.push(tokenId)
+            } else {
+                nftIds = nftIds.slice(0, idx.plus(ONE_INT).toI32()).concat([tokenId]).concat(nftIds.slice(idx.plus(ONE_INT).toI32()))
+            }
 
-        toPair.nftIds = nftIds
-        toPair.numNfts = toPair.numNfts.plus(ONE_INT)
-        toPair.save()
+            toPair.nftIds = nftIds
+            toPair.numNfts = toPair.numNfts.plus(ONE_INT)
+            toPair.save()
+        }
     }
 }
 

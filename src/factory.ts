@@ -1,22 +1,20 @@
 import {
-  NewPair,
+  CreatePairETHCall
 } from "../generated/LSSVMFactory/LSSVMFactory"
-import { LSSVMPair } from "../generated/templates/LSSVMPair/LSSVMPair"
 import { Pair, Collection, PairOwner } from "../generated/schema"
 import { BigInt } from "@graphprotocol/graph-ts"
 import { LSSVMPair as PairTemplate, ERC721 as ERC721Template } from "../generated/templates"
 
-export function handleNewPair(event: NewPair): void {
-  let pair = new Pair(event.params.poolAddress.toHex())
-  let pairContract = LSSVMPair.bind(event.params.poolAddress)
+export function handleNewPair(call: CreatePairETHCall): void {
+  let pair = new Pair(call.outputs.pair.toHex())
 
-  let ownerAddress = pairContract.owner();
+  let ownerAddress = call.from
   let pairOwner = PairOwner.load(ownerAddress.toHex())
   if (pairOwner === null) {
     pairOwner = new PairOwner(ownerAddress.toHex())
   }
 
-  let collectionAddress = pairContract.nft()
+  let collectionAddress = call.inputs._nft
   let collection = Collection.load(collectionAddress.toHex())
   let isNewCollection = collection === null
   if (collection === null) {
@@ -25,20 +23,20 @@ export function handleNewPair(event: NewPair): void {
 
   pair.owner = pairOwner.id
   pair.collection = collection.id
-  pair.type = BigInt.fromI32(pairContract.poolType())
-  pair.assetRecipient = pairContract.assetRecipient().toHex()
-  pair.bondingCurve = pairContract.bondingCurve().toHex()
-  pair.delta = pairContract.delta()
-  pair.fee = pairContract.fee()
-  pair.spotPrice = pairContract.spotPrice()
-  pair.nftIds = new Array<BigInt>()
-  pair.numNfts = BigInt.zero()
+  pair.type = BigInt.fromI32(call.inputs._poolType)
+  pair.assetRecipient = call.inputs._assetRecipient.toHex()
+  pair.bondingCurve = call.inputs._bondingCurve.toHex()
+  pair.delta = call.inputs._delta
+  pair.fee = call.inputs._fee
+  pair.spotPrice = call.inputs._spotPrice
+  pair.nftIds = call.inputs._initialNFTIDs
+  pair.numNfts = BigInt.fromI32(call.inputs._initialNFTIDs.length)
 
   pair.save()
   pairOwner.save()
   collection.save()
 
-  PairTemplate.create(event.params.poolAddress)
+  PairTemplate.create(call.outputs.pair)
   if (isNewCollection) {
     ERC721Template.create(collectionAddress)
   }
