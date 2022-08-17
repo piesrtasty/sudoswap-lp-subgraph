@@ -29,7 +29,9 @@ export function handleNewPair(call: CreatePairETHCall): void {
   pair.delta = call.inputs._delta
   pair.fee = call.inputs._fee
   pair.spotPrice = call.inputs._spotPrice
-  pair.nftIds = call.inputs._initialNFTIDs
+  let initialNFTIDs = call.inputs._initialNFTIDs
+  initialNFTIDs.sort()
+  pair.nftIds = initialNFTIDs
   pair.numNfts = BigInt.fromI32(call.inputs._initialNFTIDs.length)
 
   pair.save()
