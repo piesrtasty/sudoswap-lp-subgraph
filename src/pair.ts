@@ -53,6 +53,8 @@ export function handleSwapNFTInPair(event: SwapNFTInPair): void {
     let pair = Pair.load(event.address.toHex())
     let collection = Collection.load(pair!.collection)
     let ethChange = handleEthBalanceUpdate(event)
+    pair!.ethVolume = pair!.ethVolume.plus(ethChange.abs())
+    pair!.save()
     collection!.ethVolume = collection!.ethVolume.plus(ethChange.abs())
     collection!.save()
 }
@@ -61,6 +63,8 @@ export function handleSwapNFTOutPair(event: SwapNFTOutPair): void {
     let pair = Pair.load(event.address.toHex())
     let collection = Collection.load(pair!.collection)
     let ethChange = handleEthBalanceUpdate(event)
+    pair!.ethVolume = pair!.ethVolume.plus(ethChange.abs())
+    pair!.save()
     collection!.ethVolume = collection!.ethVolume.plus(ethChange.abs())
     collection!.save()
 }

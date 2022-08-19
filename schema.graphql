@@ -13,6 +13,7 @@ type Pair @entity {
   nftIds: [BigInt!]!
   numNfts: BigInt!
   ethBalance: BigInt!
+  ethVolume: BigInt!
 }
 
 type PairOwner @entity {

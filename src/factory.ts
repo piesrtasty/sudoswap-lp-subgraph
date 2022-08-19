@@ -36,6 +36,7 @@ export function handleNewPair(call: CreatePairETHCall): void {
   pair.nftIds = initialNFTIDs
   pair.numNfts = BigInt.fromI32(call.inputs._initialNFTIDs.length)
   pair.ethBalance = BigInt.zero()
+  pair.ethVolume = BigInt.zero()
 
   pair.save()
   pairOwner.save()
