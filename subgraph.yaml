@@ -38,9 +38,13 @@ templates:
       language: wasm/assemblyscript
       entities:
         - Pair
+        - PairOwner
+        - Collection
       abis:
         - name: LSSVMPair
           file: ./abis/LSSVMPair.json
+        - name: Multicall3
+          file: ./abis/Multicall3.json
       eventHandlers:
         - event: OwnershipTransferred(indexed address)
           handler: handleOwnershipTransferred
@@ -52,6 +56,14 @@ templates:
           handler: handleFeeUpdate
         - event: SpotPriceUpdate(uint128)
           handler: handleSpotPriceUpdate
+        - event: TokenDeposit(uint256)
+          handler: handleTokenDeposit
+        - event: TokenWithdrawal(uint256)
+          handler: handleTokenWithdrawal
+        - event: SwapNFTInPair()
+          handler: handleSwapNFTInPair
+        - event: SwapNFTOutPair()
+          handler: handleSwapNFTOutPair
       file: ./src/pair.ts
   - kind: ethereum
     name: ERC721

@@ -2,6 +2,7 @@ type Pair @entity {
   id: ID!
   owner: PairOwner!
   collection: Collection!
+  "poolType of the LSSVMPair (TOKEN, NFT, or TRADE)"
   type: BigInt!
   assetRecipient: String!
   bondingCurve: String!
@@ -11,6 +12,7 @@ type Pair @entity {
   "nftIds is sorted in ascending order with unique elements (unless the NFT is malformed)"
   nftIds: [BigInt!]!
   numNfts: BigInt!
+  ethBalance: BigInt!
 }
 
 type PairOwner @entity {
@@ -21,4 +23,6 @@ type PairOwner @entity {
 type Collection @entity {
   id: ID!
   pairs: [Pair!]! @derivedFrom(field: "collection")
+  ethOfferTVL: BigInt!
+  ethVolume: BigInt!
 }
