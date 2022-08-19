@@ -50,21 +50,29 @@ export function handleTokenWithdrawal(event: TokenWithdrawal): void {
 }
 
 export function handleSwapNFTInPair(event: SwapNFTInPair): void {
-    let pair = Pair.load(event.address.toHex())
-    let collection = Collection.load(pair!.collection)
     let ethChange = handleEthBalanceUpdate(event)
+    // Note: we must load pair and collection after the handleEthBalanceUpdate call
+    // since we make changes to those entities in the call
+
+    let pair = Pair.load(event.address.toHex())
     pair!.ethVolume = pair!.ethVolume.plus(ethChange.abs())
     pair!.save()
+
+    let collection = Collection.load(pair!.collection)
     collection!.ethVolume = collection!.ethVolume.plus(ethChange.abs())
     collection!.save()
 }
 
 export function handleSwapNFTOutPair(event: SwapNFTOutPair): void {
-    let pair = Pair.load(event.address.toHex())
-    let collection = Collection.load(pair!.collection)
     let ethChange = handleEthBalanceUpdate(event)
+    // Note: we must load pair and collection after the handleEthBalanceUpdate call
+    // since we make changes to those entities in the call
+
+    let pair = Pair.load(event.address.toHex())
     pair!.ethVolume = pair!.ethVolume.plus(ethChange.abs())
     pair!.save()
+
+    let collection = Collection.load(pair!.collection)
     collection!.ethVolume = collection!.ethVolume.plus(ethChange.abs())
     collection!.save()
 }
